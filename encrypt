@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>加密</title>
+    <style>
+        pre {
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <section class="encrypt-section">
+            <h2> 加密</h2>
+            <label for="encrypt">输入要加密的文字：</label>
+            <br>
+            <textarea name="encrypt" id="encrypt" placeholder="请输入文本..."></textarea>
+            <br>
+            <button type="submit" id="encrypt-submit">加密文本</button><button id="copyBtn">复制结果</button>
+
+            <pre class="result" id="encrypt-result"></pre>
+
+        </section>
+
+        <hr>
+
+        <h2>解密</h2>
+        <div class="input-group">
+            <label for="decrypt">输入要解密的文字：</label>
+            <br>
+            <textarea name="decrypt" id="decrypt" placeholder="请输入加密后的文本..."></textarea>
+            <br>
+            <button type="submit" id="decrypt-submit">解密文本</button><button id="copyBtn_">复制结果</button>
+
+
+            <pre class="result" id="decrypt-result"></pre>
+
+            </section>
+        </div>
+
+        <script>
+            async function copyText(text) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    alert("复制成功！");
+                } catch (err) {
+                    console.error("复制失败:", err);
+                }
+            }
+
+            // DOM元素
+            const textareaEncrypt = document.getElementById('encrypt');
+            const buttonEncryptSubmit = document.getElementById('encrypt-submit');
+            const textareaDecrypt = document.getElementById('decrypt');
+            const buttonDecryptSubmit = document.getElementById('decrypt-submit');
+            const encryptResult = document.getElementById('encrypt-result');
+            const decryptResult = document.getElementById('decrypt-result');
+            const encryptStatus = document.getElementById('encrypt-status');
+            const decryptStatus = document.getElementById('decrypt-status');
+            const methodButtons = document.querySelectorAll('.method-btn');
+
+            // 加密方法管理
+            let currentMethod = 'base64';
+            let aesKey = '';
+
+            // 监听加密方法选择
+            methodButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    methodButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentMethod = btn.dataset.method;
+
+                    if (currentMethod === 'aes') {
+                        // 为AES生成随机密钥
+                        aesKey = generateRandomKey();
+                        encryptStatus.textContent = `AES密钥: ${aesKey} (请保存此密钥用于解密)`;
+                        decryptStatus.textContent = '';
+                    } else {
+                        encryptStatus.textContent = '';
+                        decryptStatus.textContent = '';
+                    }
+                });
+            });
+
+            // 支持中文的Base64编码函数
+            function base64Encode(str) {
+                return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+                    (match, p1) => String.fromCharCode('0x' + p1)));
+            }
+
+            // 支持中文的Base64解码函数
+            function base64Decode(str) {
+                return decodeURIComponent(atob(str).split('').map(
+                    c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                ).join(''));
+            }
+
+            // 生成随机密钥
+            function generateRandomKey(length = 16) {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let result = '';
+                for (let i = 0; i < length; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            }
+
+            // XOR加密函数
+            function xorEncrypt(text, key) {
+                let result = '';
+                for (let i = 0; i < text.length; i++) {
+                    result += String.fromCharCode(text.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+                }
+                return result;
+            }
+
+            // XOR解密函数（与加密相同）
+            const xorDecrypt = xorEncrypt;
+
+            // AES加密函数（简化版，实际应用中应使用更安全的方案）
+            function aesEncrypt(text, key) {
+                // 在实际应用中，应使用Web Crypto API实现真正的AES加密
+                // 这里使用简化的方案用于演示
+                let result = '';
+                for (let i = 0; i < text.length; i++) {
+                    const charCode = text.charCodeAt(i) + key.charCodeAt(i % key.length);
+                    result += String.fromCharCode(charCode);
+                }
+                return base64Encode(result);
+            }
+
+            // AES解密函数
+            function aesDecrypt(text, key) {
+                try {
+                    const decoded = base64Decode(text);
+                    let result = '';
+                    for (let i = 0; i < decoded.length; i++) {
+                        const charCode = decoded.charCodeAt(i) - key.charCodeAt(i % key.length);
+                        result += String.fromCharCode(charCode);
+                    }
+                    return result;
+                } catch (e) {
+                    return "解密失败：无效的输入或密钥";
+                }
+            }
+
+            // 加密按钮事件
+            buttonEncryptSubmit.addEventListener('click', function () {
+                const text = textareaEncrypt.value;
+                if (!text.trim()) {
+                    encryptResult.textContent = "请输入要加密的文本";
+                    return;
+                }
+
+                let result;
+                switch (currentMethod) {
+                    case 'base64':
+                        result = base64Encode(text);
+                        break;
+                    case 'aes':
+                        result = aesEncrypt(text, aesKey);
+                        encryptStatus.textContent = `AES加密完成 (密钥: ${aesKey})`;
+                        break;
+                    case 'xor':
+                        // 为XOR生成基于文本的密钥
+                        const xorKey = generateRandomKey(8);
+                        result = base64Encode(xorEncrypt(text, xorKey));
+                        encryptStatus.textContent = `XOR加密完成 (密钥: ${xorKey})`;
+                        break;
+                    default:
+                        result = "不支持的加密方法";
+                }
+
+                encryptResult.textContent = result;
+                document.getElementById("copyBtn").addEventListener("click", () => {
+                    copyText(result);
+                });
+            });
+
+            // 解密按钮事件
+            buttonDecryptSubmit.addEventListener('click', function () {
+                const text = textareaDecrypt.value;
+                if (!text.trim()) {
+                    decryptResult.textContent = "请输入要解密的文本";
+                    return;
+                }
+
+                let result;
+                switch (currentMethod) {
+                    case 'base64':
+                        try {
+                            result = base64Decode(text);
+                        } catch (e) {
+                            result = "无效的Base64编码";
+                            decryptStatus.textContent = "解码失败";
+                        }
+                        break;
+                    case 'aes':
+                        const key = prompt("请输入AES密钥:", aesKey);
+                        if (key) {
+                            result = aesDecrypt(text, key);
+                            decryptStatus.textContent = result.includes("失败") ?
+                                "AES解密失败" : "AES解密完成";
+                        } else {
+                            result = "需要密钥才能解密";
+                            decryptStatus.textContent = "未提供密钥";
+                        }
+                        break;
+                    case 'xor':
+                        const xorKey = prompt("请输入XOR密钥:");
+                        if (xorKey) {
+                            try {
+                                const decoded = base64Decode(text);
+                                result = xorDecrypt(decoded, xorKey);
+                                decryptStatus.textContent = "XOR解密完成";
+                            } catch (e) {
+                                result = "无效的XOR加密文本";
+                                decryptStatus.textContent = "解密失败";
+                            }
+                        } else {
+                            result = "需要密钥才能解密";
+                            decryptStatus.textContent = "未提供密钥";
+                        }
+                        break;
+                    default:
+                        result = "不支持的加密方法";
+                }
+
+                decryptResult.textContent = result;
+                document.getElementById("copyBtn_").addEventListener("click", () => {
+                    copyText(result);
+                });
+            });
+
+            // 初始化页面
+            encryptResult.textContent = "等待加密...";
+            decryptResult.textContent = "等待解密...";
+        </script>
+</body>
+
+</html>
