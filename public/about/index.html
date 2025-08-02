@@ -1,0 +1,111 @@
+<!doctype html>
+<html
+  lang="zh-CN"
+  dir="ltr"
+>
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=36123&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8"> <meta name="viewport" content="width=device-width"> <title>README | Concise</title>  <link rel="stylesheet" href="/css/main.css">  <script src="/js/main.js"></script>
+  </head>
+  <body>
+		<main> 
+	<header><h1 class="title">Concise</h1> <p class="subtitle">yingyu5658的数字花园</p>  
+</header>
+	   <h2>README</h2> 
+<time datetime="2025-08-02">
+     2025-08-02
+   </time>
+
+<div class="post-content">
+<h3 id="concise"><strong>Concise</strong></h3>
+<p>A minimalist Hugo theme focused on writing.</p>
+<p><img src="./homepage.png" alt="homepage">
+<img src="./tn.png" alt="post">
+<img src="./screenshot.png" alt="single"></p>
+<hr>
+<h3 id="features"><strong>Features</strong></h3>
+<ul>
+<li><strong>Extremely Minimalist Design</strong></li>
+<li><strong>No Unnecessary Features</strong></li>
+<li><strong>Focus on the Essence of Blogging</strong></li>
+</ul>
+<hr>
+<h3 id="quick-start"><strong>Quick Start</strong></h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/yingyu5658/hugo-theme-concise.git themes/concise
+</span></span></code></pre></div><p>Add the following configuration to <code>hugo.toml</code> in your site&rsquo;s root directory:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>baseURL = <span style="color:#b44">&#34;...&#34;</span>
+</span></span><span style="display:flex;"><span>publishDir = <span style="color:#b44">&#34;public&#34;</span>
+</span></span><span style="display:flex;"><span>title = <span style="color:#b44">&#34;YOUR_WEBSITE_TITLE&#34;</span>
+</span></span><span style="display:flex;"><span>description = <span style="color:#b44">&#34;SUBTITLE&#34;</span>
+</span></span><span style="display:flex;"><span>languageCode = <span style="color:#b44">&#34;zh-CN&#34;</span>
+</span></span><span style="display:flex;"><span>theme = [<span style="color:#b44">&#34;concise&#34;</span>]
+</span></span><span style="display:flex;"><span>pagination = { pagerSize = <span style="color:#666">25</span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[permalinks]
+</span></span><span style="display:flex;"><span>posts = <span style="color:#b44">&#34;YOUR_PERMALINKS&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[params]
+</span></span><span style="display:flex;"><span>[[params.homepage.content]]
+</span></span><span style="display:flex;"><span>name = <span style="color:#b44">&#34;Archives&#34;</span><span style="color:#080;font-style:italic"># Posts archive</span>
+</span></span><span style="display:flex;"><span>url = <span style="color:#b44">&#34;/post&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[[params.homepage.content]]
+</span></span><span style="display:flex;"><span>name = <span style="color:#b44">&#34;Links&#34;</span><span style="color:#080;font-style:italic"># Friend links</span>
+</span></span><span style="display:flex;"><span>url = <span style="color:#b44">&#34;/links&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[[params.homepage.content]]
+</span></span><span style="display:flex;"><span>name = <span style="color:#b44">&#34;About&#34;</span>
+</span></span><span style="display:flex;"><span>url = <span style="color:#b44">&#34;/about&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[[params.homepage.content]]
+</span></span><span style="display:flex;"><span>name = <span style="color:#b44">&#34;RSS&#34;</span>
+</span></span><span style="display:flex;"><span>url = <span style="color:#b44">&#34;/atom.xml&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[params.footer]
+</span></span><span style="display:flex;"><span>content = <span style="color:#b44">&#34;Email: YOUR_EMAIL&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[markup.highlight]
+</span></span><span style="display:flex;"><span>noClasses = <span style="color:#a2f;font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>style = <span style="color:#b44">&#34;emacs&#34;</span><span style="color:#080;font-style:italic"># Options: github, emacs, solarized-light, etc.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[outputFormats.RSS]
+</span></span><span style="display:flex;"><span>baseName = <span style="color:#b44">&#34;atom&#34;</span>
+</span></span></code></pre></div><hr>
+<h3 id="comments"><strong>Comments</strong></h3>
+<ul>
+<li><strong>Waline Comment System Support</strong></li>
+</ul>
+<p>Modify <code>serverURL</code> in <code>layouts/_default/single.html</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#008000;font-weight:bold">script</span> <span style="color:#b44">type</span><span style="color:#666">=</span><span style="color:#b44">&#34;module&#34;</span>&gt;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> { init } from <span style="color:#b44">&#39;https://unpkg.com/@waline/client@v3/dist/waline.js&#39;</span>;
+</span></span><span style="display:flex;"><span>init({
+</span></span><span style="display:flex;"><span>el<span style="color:#666">:</span> <span style="color:#b44">&#39;#waline&#39;</span>,
+</span></span><span style="display:flex;"><span>serverURL<span style="color:#666">:</span> <span style="color:#b44">&#39;&#39;</span> <span style="color:#080;font-style:italic">// ← Replace with your Waline server URL
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>});
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#008000;font-weight:bold">script</span>&gt;
+</span></span></code></pre></div>
+</div>
+ 
+
+<link rel="stylesheet" href="/css/main.css" />
+<div id="waline"></div>
+<script type="module">
+	import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+	init({
+		el: '#waline',
+		serverURL: ''
+	});
+</script>
+
+	<footer>
+		<p>-----------------------------------</p>
+
+<p>Email: YOUR_EMAIL</p>
+
+<img src="/notbyai.png" class="not-by-ai" /> <br>
+ 
+    </footer>
+
+</main>
+      </body>
+</html>
+
